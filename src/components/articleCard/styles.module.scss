@@ -1,0 +1,63 @@
+.align {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cardContainer {
+    background-color: var(--backgroundCard);
+    height: 440px;
+    width: 900px;
+    display: flex;
+    border-radius: 10px;
+    margin-top: 25px;
+    padding: 90px 40px 50px 50px;
+
+    background-image: url('../../../public/fallingCoins.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 -390px;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+
+    img {
+        width: 280px;
+        height: 290px;
+        margin-right: 60px;
+        object-fit: cover;
+    }
+
+    
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h2 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    p {
+        font-size: 13px;
+        line-height: 1.7;
+    }
+}
+
+.middleBackground {
+    width: 875px;
+    height: 15px;
+    border-radius: 0 0 10px 10px;
+    background-color: #173349;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+}
+
+.bottomBackground {
+    width: 850px;
+    height: 15px;
+    border-radius: 0 0 10px 10px;
+    background-color: var(--backgroundCard);
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    margin-bottom: 25px;
+}

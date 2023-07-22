@@ -12,6 +12,32 @@
   h1 {
     font-size: 20px;
   }
+
+  div {
+    width: 151.5px;
+    height: 32px;
+    background-color: var(--button);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  button {
+    color: black;
+    padding: 7.5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border: .05px transparent solid;
+    background-color: var(--button);
+  }
+
+  @media (min-width: 1080px) {
+    div {
+      width: 160px;
+      height: 40px;
+    }
+  }
 }
 
 .mainContainer {
@@ -35,14 +61,25 @@
 }
 
 .chartsSection {
-  background-image: url('../../public/DetailChart.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  opacity: 0.2;
-  filter: grayscale(50%);
-  background-position: top;
-
   width: 100%;
   height: 300px;
   display: flex;
+  flex-direction: column;
+  padding: 50px 0 0 350px;
+
+  position: relative;
+  background-image: url('../../public/DetailChart.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.chartsSection::before {
+  content: ""; 
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5); 
+  filter: grayscale(100%);
 }

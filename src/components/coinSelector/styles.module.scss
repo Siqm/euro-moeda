@@ -1,10 +1,13 @@
 .coinSelector {
-    background-color: var(--background);
     // height: 65px;
     border-left: solid .5px #aaaaaa;
     padding: 10px 0 1.5px 10px;
     width: 90px;
     overflow: hidden;
+
+    select {
+        color: black;
+    }
 
     p {
         font-size: 12px;
@@ -12,4 +15,7 @@
         height: 14px;
     }
 
+    option {
+        color: black;
+    }
 }

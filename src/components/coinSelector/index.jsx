@@ -31,7 +31,10 @@ export default function CoinSelector({ coinsList, defaultCoin, onChange }) {
 
     useEffect(() => {
         selection ? setCoinSelected('Euro') : setCoinSelected('Selecione:') 
+
+        console.log('coinList', JSON.stringify(coinsList));
     }, [])
+
 
     return (
         <div className={styles.coinSelector}>
@@ -50,7 +53,7 @@ export default function CoinSelector({ coinsList, defaultCoin, onChange }) {
                     :
                     coinsList.map((coin, index) => {
                         return (
-                            <option key={index} value={coin.name}>{coin.moeda}</option>
+                            <option key={index} value={coin.moeda}>{coin.moeda}</option>
                         )
                     }) 
                 }

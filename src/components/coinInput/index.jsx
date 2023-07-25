@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styles from './styles.module.scss'
 import CoinSelector from "../coinSelector";
 
-export default function CoinInput({ defaultCoin, coinValue, onChange, coins }) {
+export default function CoinInput({ defaultCoin, coinValue, onChange, coins, readCoinSelection }) {
 
   function handleChanges(event) {
 
@@ -12,7 +12,7 @@ export default function CoinInput({ defaultCoin, coinValue, onChange, coins }) {
 
     if (event.nativeEvent.type === 'change') {
       
-      onChange.handleCoinSelection(event.target.value)
+      readCoinSelection(event.target.value)
     }
   }
 

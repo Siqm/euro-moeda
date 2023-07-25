@@ -7,6 +7,7 @@ import CoinInput from '@/components/coinInput'
 import ArticleCard from '@/components/articleCard'
 import { api } from '@/services/priceApi'
 import { useEffect, useState } from 'react'
+import Graphic from '@/components/Graphic'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -39,38 +40,56 @@ const articles = [
   },
 ]
 
+async function loadConvertionPrice (ApiParam0) {
+
+  try {
+    const response = await api(`json/last/${ApiParam0}`, 'GET')
+    console.log('response', response);
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export default function Home() {
 
   const [selectedCoin, setSelectedCoin] = useState('BRL')
 
-  function handleCoinSelection (currency) {
+  const [conversorInputOne, setConversorInputOne] = useState(0);
+  const [conversorInputTwo, setConversorInputTwo] = useState(0);
 
-    
-  }
+  const [eurAsk, setEurAsk] = useState(0)
+  const [selectedAsk, setSelectedAsk] = useState(0)
 
-  const moedaParamAPI = `${selectedCoin}-EUR`
-
-  function handleValueInput() {
-
-  }
-
-  const changes = {handleCoinSelection, handleValueInput}
+  const [ApiParam0, setApiParam0] = useState('')
 
   const [coins, setCoins] = useState([])
+  const changes = ''
+
+  const data = [
+    ['Ano', 'Vendas'],
+    [2015, 1000],
+    [2016, 1170],
+    [2017, 660],
+    [2018, 1030],
+  ];
 
   useEffect(() => {
+
+    function loadConversorValues() {
+      
+      
+    }
+    
     async function loadAvailableConvertions() {
-
       try {
-        const teste = await api('json/available', 'GET')
+        const response = await api('json/available', 'GET')
 
-        var responseString = JSON.stringify(teste)
+        var responseString = JSON.stringify(response)
         const responseLength = responseString.length - 1
         responseString = responseString.substring(1, responseLength)
 
-
         const regex = /"([A-Z]{3})-EUR":"([^"]+)\/Euro"/g;
-        // const matches = responseString.match(regex)
 
         let result;
         const filteredData = [];
@@ -81,9 +100,6 @@ export default function Home() {
 
           filteredData.push({ moeda, name });
         }
-
-        // const coinsAvailableToEuro = matches.map(match => match.substring(0, 3))
-
         setCoins(filteredData)
 
       } catch (e) {
@@ -91,21 +107,34 @@ export default function Home() {
       }
     }
 
-    async function loadConvertionPrice() {
+    setApiParam0(`${selectedCoin}-EUR`)
 
-      try {
-        const response = await api(`json/last/${moedaParamAPI}`, 'GET')
-        console.log(response)
-
-
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    loadConvertionPrice()
+    loadConvertionPrice(ApiParam0)
     loadAvailableConvertions()
   }, [])
+
+  useEffect(() => {
+
+    async function getEurAsk() {
+
+      const awesomeApiEndpoint = `EUR-${selectedCoin}`
+
+      const response = await api(`/last/${awesomeApiEndpoint}`, 'GET')
+
+      const dynamicProperty = Object.keys(response)[0];
+      const responseObject = response[dynamicProperty]
+
+      console.log('response', JSON.stringify(responseObject));
+
+      setEurAsk(Number(responseObject.ask)) // Sets eurAsk
+      setConversorInputOne(Number(Number(responseObject.ask).toFixed(2)))
+    }
+    
+    getEurAsk()
+
+    console.log('selectedCoin', selectedCoin);
+
+  }, [selectedCoin])
 
 
   return (
@@ -115,7 +144,9 @@ export default function Home() {
         <header className={styles.header}>
           <h1>Euro Moeda</h1>
 
+          <div className={styles.blackBox}>
           <button>Outros conversores</button>
+          </div>
         </header>
 
         <main className={styles.mainContainer}>
@@ -124,9 +155,9 @@ export default function Home() {
 
 
 
-            <CoinInput coins={coins} onChange={changes}/>
+            <CoinInput coins={coins} onChange={changes} readCoinSelection={(eventData) => setSelectedCoin(eventData)} coinValue={conversorInputOne}/>
 
-            <CoinInput defaultCoin={{moeda: 'EUR', name: 'Euro'}} coins={coins}  />
+            <CoinInput defaultCoin={{moeda: 'EUR', name: 'Euro'}} coins={coins} coinValue={conversorInputTwo} />
 
           </div>
 
@@ -135,9 +166,12 @@ export default function Home() {
         </main>
 
         <div className={styles.chartsSection}>
+
           <h2>Trocas populares</h2>
           <p>Aqui você encontra um gráfico dos últimos 30 dias das trocas mais populares</p>
           <p>Clique em um para obter mais detalhes</p>
+          <Graphic size={{width: "200px", height: "150px"}} chartType='Line' data = {data}/>
+
         </div>
 
         <div className={styles.articlesSection}>

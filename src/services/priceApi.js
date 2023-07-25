@@ -12,6 +12,7 @@ export async function api(endpoint, method) {
             `https://economia.awesomeapi.com.br/${endpoint}`,
             requestOptions
         )
+        console.log('`https://economia.awesomeapi.com.br/${endpoint}`', `https://economia.awesomeapi.com.br/${endpoint}`);
 
         const responseData = await response.json();
 

@@ -2,12 +2,14 @@ import React, { useEffect } from "react";
 import styles from './styles.module.scss'
 import CoinSelector from "../coinSelector";
 
-export default function CoinInput({ defaultCoin, coinValue, onChange, coins, readCoinSelection }) {
+export default function CoinInput({ defaultCoin, coinValue, setCoinValue, onChange, coins, readCoinSelection }) {
 
   function handleChanges(event) {
 
     if (event.nativeEvent.type === 'input') {
-      console.log('hello')
+      setCoinValue(event.target.value)
+      const data = {event: event, type: defaultCoin}
+      onChange(data)
     }
 
     if (event.nativeEvent.type === 'change') {

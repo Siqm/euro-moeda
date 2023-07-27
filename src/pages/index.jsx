@@ -40,7 +40,7 @@ const articles = [
   },
 ]
 
-async function loadConvertionPrice (ApiParam0) {
+async function loadConvertionPrice(ApiParam0) {
 
   try {
     const response = await api(`json/last/${ApiParam0}`, 'GET')
@@ -56,15 +56,13 @@ export default function Home() {
   const [selectedCoin, setSelectedCoin] = useState('BRL')
 
   const [conversorInputOne, setConversorInputOne] = useState(0);
-  const [conversorInputTwo, setConversorInputTwo] = useState(0);
+  const [conversorInputTwo, setConversorInputTwo] = useState(1);
 
   const [eurAsk, setEurAsk] = useState(0)
-  const [selectedAsk, setSelectedAsk] = useState(0)
 
   const [ApiParam0, setApiParam0] = useState('')
 
   const [coins, setCoins] = useState([])
-  const changes = ''
 
   const data = [
     ['Ano', 'Vendas'],
@@ -74,13 +72,24 @@ export default function Home() {
     [2018, 1030],
   ];
 
+  function setAndConvertInputValues(data) {
+    const newValue = data.event.target.value
+    
+    console.log('data.type', data.type);
+    if (data.type) {
+      setConversorInputOne(parseFloat(newValue * eurAsk).toFixed(2))
+    } else {
+      setConversorInputTwo(parseFloat(newValue / eurAsk).toFixed(2))
+    }
+  }
+
   useEffect(() => {
 
     function loadConversorValues() {
-      
-      
+
+
     }
-    
+
     async function loadAvailableConvertions() {
       try {
         const response = await api('json/available', 'GET')
@@ -129,7 +138,7 @@ export default function Home() {
       setEurAsk(Number(responseObject.ask)) // Sets eurAsk
       setConversorInputOne(Number(Number(responseObject.ask).toFixed(2)))
     }
-    
+
     getEurAsk()
 
     console.log('selectedCoin', selectedCoin);
@@ -145,7 +154,7 @@ export default function Home() {
           <h1>Euro Moeda</h1>
 
           <div className={styles.blackBox}>
-          <button>Outros conversores</button>
+            <button>Outros conversores</button>
           </div>
         </header>
 
@@ -155,9 +164,21 @@ export default function Home() {
 
 
 
-            <CoinInput coins={coins} onChange={changes} readCoinSelection={(eventData) => setSelectedCoin(eventData)} coinValue={conversorInputOne}/>
+            <CoinInput
+              coins={coins}
+              coinValue={conversorInputOne}
+              setCoinValue={setConversorInputOne}
+              onChange={setAndConvertInputValues}
+              readCoinSelection={(eventData) => setSelectedCoin(eventData)}
+            />
 
-            <CoinInput defaultCoin={{moeda: 'EUR', name: 'Euro'}} coins={coins} coinValue={conversorInputTwo} />
+            <CoinInput
+              coins={coins}
+              coinValue={conversorInputTwo}
+              setCoinValue={setConversorInputTwo}
+              onChange={setAndConvertInputValues}
+              defaultCoin={{ moeda: 'EUR', name: 'Euro' }}
+            />
 
           </div>
 
@@ -170,7 +191,11 @@ export default function Home() {
           <h2>Trocas populares</h2>
           <p>Aqui você encontra um gráfico dos últimos 30 dias das trocas mais populares</p>
           <p>Clique em um para obter mais detalhes</p>
-          <Graphic size={{width: "200px", height: "150px"}} chartType='Line' data = {data}/>
+          <Graphic 
+            data={data} 
+            chartType='Line' 
+            size={{ width: "200px", height: "150px" }} 
+          />
 
         </div>
 

@@ -40,17 +40,6 @@ const articles = [
   },
 ]
 
-async function loadConvertionPrice(ApiParam0) {
-
-  try {
-    const response = await api(`json/last/${ApiParam0}`, 'GET')
-    console.log('response', response);
-
-  } catch (error) {
-    console.log(error)
-  }
-}
-
 export default function Home() {
 
   const [selectedCoin, setSelectedCoin] = useState('BRL')
@@ -59,8 +48,6 @@ export default function Home() {
   const [conversorInputTwo, setConversorInputTwo] = useState(1);
 
   const [eurAsk, setEurAsk] = useState(0)
-
-  const [ApiParam0, setApiParam0] = useState('')
 
   const [coins, setCoins] = useState([])
 
@@ -74,8 +61,7 @@ export default function Home() {
 
   function setAndConvertInputValues(data) {
     const newValue = data.event.target.value
-    
-    console.log('data.type', data.type);
+
     if (data.type) {
       setConversorInputOne(parseFloat(newValue * eurAsk).toFixed(2))
     } else {
@@ -116,9 +102,6 @@ export default function Home() {
       }
     }
 
-    setApiParam0(`${selectedCoin}-EUR`)
-
-    loadConvertionPrice(ApiParam0)
     loadAvailableConvertions()
   }, [])
 
@@ -126,22 +109,34 @@ export default function Home() {
 
     async function getEurAsk() {
 
-      const awesomeApiEndpoint = `EUR-${selectedCoin}`
+      var awesomeApiEndpoint = `EUR-${selectedCoin}`
 
-      const response = await api(`/last/${awesomeApiEndpoint}`, 'GET')
+      try {
+        var response = await api(`last/${awesomeApiEndpoint}`, 'GET')
 
-      const dynamicProperty = Object.keys(response)[0];
-      const responseObject = response[dynamicProperty]
+        if (response.status === 404) {
+          awesomeApiEndpoint = `${selectedCoin}-EUR`
+          response = await api(`last/${awesomeApiEndpoint}`, 'GET')
+          if (response.status === 404) {
+            throw new Error('Moeda não encontrada ' + awesomeApiEndpoint)
+          }
+        }
 
-      console.log('response', JSON.stringify(responseObject));
+        const dynamicProperty = Object.keys(response)[0];
+        const responseObject = response[dynamicProperty]
 
-      setEurAsk(Number(responseObject.ask)) // Sets eurAsk
-      setConversorInputOne(Number(Number(responseObject.ask).toFixed(2)))
+        setEurAsk(Number(responseObject.ask)) // Sets eurAsk
+        setConversorInputOne(Number(Number(responseObject.ask).toFixed(2)))
+        console.log('awesomeApiEndpoint', awesomeApiEndpoint);
+      } catch (error) {
+        console.log(error)
+      }
+
+
+
     }
 
     getEurAsk()
-
-    console.log('selectedCoin', selectedCoin);
 
   }, [selectedCoin])
 
@@ -191,10 +186,10 @@ export default function Home() {
           <h2>Trocas populares</h2>
           <p>Aqui você encontra um gráfico dos últimos 30 dias das trocas mais populares</p>
           <p>Clique em um para obter mais detalhes</p>
-          <Graphic 
-            data={data} 
-            chartType='Line' 
-            size={{ width: "200px", height: "150px" }} 
+          <Graphic
+            data={data}
+            chartType='Line'
+            size={{ width: "200px", height: "150px" }}
           />
 
         </div>

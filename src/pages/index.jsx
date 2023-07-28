@@ -59,6 +59,11 @@ export default function Home() {
     [2018, 1030],
   ];
 
+  /**
+   * A função tem a responsabilidade de setar o valor do input e calcular o outro input respectivamente
+   * 
+   * @param {Object} data - Um objeto contendo as propriedades event e type
+   */
   function setAndConvertInputValues(data) {
     const newValue = data.event.target.value
 
@@ -69,13 +74,16 @@ export default function Home() {
     }
   }
 
+  /**
+   * Esse useEffect é executado no carregamento da página
+   * 
+   */
   useEffect(() => {
 
-    function loadConversorValues() {
-
-
-    }
-
+    /**
+     * A função loadAvailableConvertions() carrega todas as moedas que a API suporta converter para o euro
+     * 
+     */
     async function loadAvailableConvertions() {
       try {
         const response = await api('json/available', 'GET')
@@ -102,11 +110,35 @@ export default function Home() {
       }
     }
 
+    async function loadGraphicsData() {
+      const currencyArray = ["BRL-EUR", "BTC-EUR", "EUR-AOA", "USD-EUR"]
+      var responseObjects = []
+
+      try {
+        currencyArray.map(async (code) => {
+          console.log('code', code);
+          const response = await api(`json/daily/${code}/10`, 'GET')
+  
+          responseObjects.push(response)
+        })
+        console.log('responseObjects', responseObjects);
+      } catch (error) {
+        
+      }
+    }
+
+    loadGraphicsData()
     loadAvailableConvertions()
   }, [])
 
+  /**
+   * Observa qualquer alteração em selectedCoin e executa
+   */
   useEffect(() => {
 
+    /**
+     * Carrega o valor de conversão para a moeda escolhida
+     */
     async function getEurAsk() {
 
       var awesomeApiEndpoint = `EUR-${selectedCoin}`

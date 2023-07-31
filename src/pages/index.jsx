@@ -40,49 +40,79 @@ const articles = [
   },
 ]
 
-export default function Home() {
+function useLoadGraphicsData() {
+  const [graphicData, setGraphicData] = useState([]);
 
-  const [selectedCoin, setSelectedCoin] = useState('BRL')
-
-  const [conversorInputOne, setConversorInputOne] = useState(0);
-  const [conversorInputTwo, setConversorInputTwo] = useState(1);
-
-  const [eurAsk, setEurAsk] = useState(0)
-
-  const [coins, setCoins] = useState([])
-
-  const data = [
-    ['Ano', 'Vendas'],
-    [2015, 1000],
-    [2016, 1170],
-    [2017, 660],
-    [2018, 1030],
-  ];
-
-  /**
-   * A função tem a responsabilidade de setar o valor do input e calcular o outro input respectivamente
-   * 
-   * @param {Object} data - Um objeto contendo as propriedades event e type
-   */
-  function setAndConvertInputValues(data) {
-    const newValue = data.event.target.value
-
-    if (data.type) {
-      setConversorInputOne(parseFloat(newValue * eurAsk).toFixed(2))
-    } else {
-      setConversorInputTwo(parseFloat(newValue / eurAsk).toFixed(2))
-    }
-  }
-
-  /**
-   * Esse useEffect é executado no carregamento da página
-   * 
-   */
   useEffect(() => {
+    async function loadGraphicsData() {
+      const currencyArray = ["EUR-BRL", "BTC-EUR", "EUR-AOA", "USD-EUR"];
+      var responseObjects = [];
+    
+      try {
+        await Promise.all(
+          currencyArray.map(async (code) => {
+            const response = await api(`json/daily/${code}/10`, 'GET');
+            responseObjects.push(response);
+          })
+        );
+    
+        // Função interna assíncrona para processar os dados
+        async function processData() {
+          const tempDataArray = []; // Array temporário para armazenar os dados de cada moeda
+    
+          responseObjects.forEach((cambiumData) => {
+            const newGraphicData = {};
+    
+            cambiumData.forEach((object, index) => {
+              if (index === 0) {
+                // Define inputCambium e outputCambium se for o primeiro elemento.
+                newGraphicData.inputCambium = object.code;
+                newGraphicData.outputCambium = object.codein;
+                return;
+              }
+    
+              const timestampInMilliseconds = parseInt(object.timestamp) * 1000;
+              const data = new Date(timestampInMilliseconds);
+              const day = data.getDate();
+              const month = data.getMonth() + 1;
+              const year = data.getFullYear();
+    
+              // Crie o objeto correspondente ao índice atual (1, 2, ...)
+              newGraphicData[index] = {
+                date: `${day}/${month}/${year}`,
+                sellingPrice: object.ask,
+              };
+            });
+    
+            // Adicione o objeto newGraphicData ao array temporário
+            tempDataArray.push(newGraphicData);
+          });
+    
+          return tempDataArray;
+        }
+    
+        // Processar os dados dentro da função interna
+        const tempData = await processData();
+    
+        // Mesclar os dados do tempData com o estado graphicData
+        setGraphicData((prevGraphicData) => [...prevGraphicData, ...tempData]);
+    
+      } catch (error) {
+        console.log('error', error);
+      }
+    }
+    loadGraphicsData();
+  }, []);
 
+  return graphicData;
+}
+
+function useLoadAvailableConversions() {
+  const [coins, setCoins] = useState([]);
+
+  useEffect(() => {
     /**
      * A função loadAvailableConvertions() carrega todas as moedas que a API suporta converter para o euro
-     * 
      */
     async function loadAvailableConvertions() {
       try {
@@ -109,27 +139,145 @@ export default function Home() {
         console.log("error inside loadAvailableConvertions", e)
       }
     }
+    loadAvailableConvertions();
+  }, []);
 
-    async function loadGraphicsData() {
-      const currencyArray = ["BRL-EUR", "BTC-EUR", "EUR-AOA", "USD-EUR"]
-      var responseObjects = []
+  return coins;
+}
 
-      try {
-        currencyArray.map(async (code) => {
-          console.log('code', code);
-          const response = await api(`json/daily/${code}/10`, 'GET')
-  
-          responseObjects.push(response)
-        })
-        console.log('responseObjects', responseObjects);
-      } catch (error) {
-        
-      }
+export default function Home() {
+
+  const [selectedCoin, setSelectedCoin] = useState('BRL')
+
+  const [conversorInputOne, setConversorInputOne] = useState(0);
+  const [conversorInputTwo, setConversorInputTwo] = useState(1);
+
+  const [eurAsk, setEurAsk] = useState(0)
+
+  // Fetch and memoize graphic data
+  const graphicData = useLoadGraphicsData();
+  // Fetch and memoize available conversions
+  const coins = useLoadAvailableConversions();
+
+  const data = [
+    ['Ano', 'Vendas'],
+    [2015, 1000],
+    [2016, 1170],
+    [2017, 660],
+    [2018, 1030],
+  ];
+
+  /**
+   * A função tem a responsabilidade de setar o valor do input e calcular o outro input respectivamente
+   * 
+   * @param {Object} data - Um objeto contendo as propriedades event e type
+   */
+  function setAndConvertInputValues(data) {
+    const newValue = data.event.target.value
+
+    if (data.type) {
+      setConversorInputOne(parseFloat(newValue * eurAsk).toFixed(2))
+    } else {
+      setConversorInputTwo(parseFloat(newValue / eurAsk).toFixed(2))
     }
+  }
 
-    loadGraphicsData()
-    loadAvailableConvertions()
-  }, [])
+  // /**
+  //  * Esse useEffect é executado no carregamento da página
+  //  * 
+  //  */
+  // useEffect(() => {
+
+  //   /**
+  //    * A função loadAvailableConvertions() carrega todas as moedas que a API suporta converter para o euro
+  //    */
+  //   async function loadAvailableConvertions() {
+  //     try {
+  //       const response = await api('json/available', 'GET')
+
+  //       var responseString = JSON.stringify(response)
+  //       const responseLength = responseString.length - 1
+  //       responseString = responseString.substring(1, responseLength)
+
+  //       const regex = /"([A-Z]{3})-EUR":"([^"]+)\/Euro"/g;
+
+  //       let result;
+  //       const filteredData = [];
+
+  //       while ((result = regex.exec(responseString)) !== null) {
+  //         const moeda = result[1]; // Captura as 3 letras da moeda
+  //         const name = result[2]; // Captura o nome completo da moeda
+
+  //         filteredData.push({ moeda, name });
+  //       }
+  //       setCoins(filteredData)
+
+  //     } catch (e) {
+  //       console.log("error inside loadAvailableConvertions", e)
+  //     }
+  //   }
+
+  //   async function loadGraphicsData() {
+  //     const currencyArray = ["EUR-BRL", "BTC-EUR", "EUR-AOA", "USD-EUR"];
+  //     var responseObjects = [];
+    
+  //     try {
+  //       await Promise.all(
+  //         currencyArray.map(async (code) => {
+  //           const response = await api(`json/daily/${code}/10`, 'GET');
+  //           responseObjects.push(response);
+  //         })
+  //       );
+    
+  //       // Função interna assíncrona para processar os dados
+  //       async function processData() {
+  //         const tempDataArray = []; // Array temporário para armazenar os dados de cada moeda
+    
+  //         responseObjects.forEach((cambiumData) => {
+  //           const newGraphicData = {};
+    
+  //           cambiumData.forEach((object, index) => {
+  //             if (index === 0) {
+  //               // Define inputCambium e outputCambium se for o primeiro elemento.
+  //               newGraphicData.inputCambium = object.code;
+  //               newGraphicData.outputCambium = object.codein;
+  //               return;
+  //             }
+    
+  //             const timestampInMilliseconds = parseInt(object.timestamp) * 1000;
+  //             const data = new Date(timestampInMilliseconds);
+  //             const day = data.getDate();
+  //             const month = data.getMonth() + 1;
+  //             const year = data.getFullYear();
+    
+  //             // Crie o objeto correspondente ao índice atual (1, 2, ...)
+  //             newGraphicData[index] = {
+  //               date: `${day}/${month}/${year}`,
+  //               sellingPrice: object.ask,
+  //             };
+  //           });
+    
+  //           // Adicione o objeto newGraphicData ao array temporário
+  //           tempDataArray.push(newGraphicData);
+  //         });
+    
+  //         return tempDataArray;
+  //       }
+    
+  //       // Processar os dados dentro da função interna
+  //       const tempData = await processData();
+    
+  //       // Mesclar os dados do tempData com o estado graphicData
+  //       setGraphicData((prevGraphicData) => [...prevGraphicData, ...tempData]);
+    
+  //     } catch (error) {
+  //       console.log('error', error);
+  //     }
+  //   }
+    
+  //   loadGraphicsData()
+  //   loadAvailableConvertions()
+  // }, [])
 
   /**
    * Observa qualquer alteração em selectedCoin e executa
@@ -171,6 +319,10 @@ export default function Home() {
     getEurAsk()
 
   }, [selectedCoin])
+
+  useEffect(() => {
+    console.log('graphicData', graphicData);
+  }, [graphicData])
 
 
   return (

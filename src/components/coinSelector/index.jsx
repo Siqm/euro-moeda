@@ -32,7 +32,6 @@ export default function CoinSelector({ coinsList, defaultCoin, onChange }) {
     useEffect(() => {
         selection ? setCoinSelected('Euro') : setCoinSelected('Selecione:') 
 
-        console.log('coinList', JSON.stringify(coinsList));
     }, [])
 
 

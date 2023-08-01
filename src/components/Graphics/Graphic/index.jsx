@@ -20,7 +20,7 @@ const options = {
 }
 
 
-export default function Graphic({ chartType, data, size }) {
+export default function Graphic({ chartType, data, size, }) {
 
   return (
     <>

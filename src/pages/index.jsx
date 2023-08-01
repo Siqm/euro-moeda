@@ -272,28 +272,41 @@ export default function Home() {
 
           <div className={styles.chartsRow}>
 
-          {graphicData.map((graphicEntry, index) => {
+            {graphicData.map((graphicEntry, index) => {
 
-            const input = graphicEntry.inputCambium
-            const output = graphicEntry.outputCambium
+              const input = graphicEntry.inputCambium
+              const output = graphicEntry.outputCambium
 
+              const entryKeys = Object.keys(graphicEntry)
 
+              var dataTeste = entryKeys.map((key, index) => {
+                if (!isNaN(parseInt(key))) {
+                  return [
+                    graphicEntry[key].date,
+                    parseFloat(graphicEntry[key].sellingPrice).toFixed(2)
+                  ]
+                }
+              })
 
-            var options = {
-              selectionMode: 'multiple',
-              tooltop: {trigger: 'selection'},
-              aggregationTarget: 'category'
-            }
+              dataTeste = dataTeste.filter(element => element !== undefined);
 
-            return (
-              <Graphic
-                key={index}
-                data={data}
-                size={{ width: "200px", height: "150px" }}
-                chartType='Line'
-              />
-            )
-          })}
+              console.log('dataTeste', dataTeste);
+
+              var options = {
+                selectionMode: 'multiple',
+                tooltop: { trigger: 'selection' },
+                aggregationTarget: 'category'
+              }
+
+              return (
+                <Graphic
+                  key={index}
+                  data={data}
+                  size={{ width: "200px", height: "150px" }}
+                  chartType='Line'
+                />
+              )
+            })}
 
           </div>
 

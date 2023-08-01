@@ -12,35 +12,6 @@ import articles from '../assets/staticData'
 
 const inter = Inter({ subsets: ['latin'] })
 
-// const articles = [
-//   {
-//     title: 'Descubra A Euromoeda: Uma Ferramenta De Conversão De Moedas Para O Euro',
-//     imageUrl: '/articles/article01-euro-moeda.jpg',
-//     imageAlt: 'Monumento do simbolo do euro como moeda, com 12 estrelas',
-//     text: 'Você já se perguntou o que é o euro e porque ele é importante? Está procurando por uma maneira fácil de comprar ou converter euros para outra moeda? Se você já está familiarizado com a moeda européia ou está procurando começar a entender a partir do zero, então este artigo é para você.- Descubra tudo o que precisa saber sobre o euro incluindo o que é o Euromoeda.com com este artigo informativo. Aprenda sobre a história do euro, quais países usam a moeda européia, e qual é o futuro do euro. Obtenha todas essas informações e mais aqui no Euromoeda.com.',
-//   }, {
-//     title: 'Sobre o Euro',
-//     imageUrl: '/articles/article02-euro-moeda.jpg',
-//     imageAlt: 'Monumento do simbolo do euro como moeda, com 12 estrelas',
-//     text: 'O euro é a moeda oficial da Zona Euro, usada por 19 países da União Europeia para facilitar as transações comerciais. É regulado pela Autoridade Monetária Europeia e as notas e moedas são emitidas em diferentes denominações. A cotação do euro é influenciada por fatores como taxas de juros, estabilidade econômica, decisões políticas e exportações/importações.',
-//   }, {
-//     title: 'Como a Cotação do Euro Moeda é Influenciada?',
-//     imageUrl: '/articles/article04-euro-moeda.jpg',
-//     imageAlt: 'Um grupo de moedas de euro em uma superfície branca.',
-//     text: 'A cotação do euro moeda é influenciada principalmente pela oferta e demanda de moedas estrangeiras em relação ao euro. Fatores econômicos, políticos, bancários e rumores também podem afetar a cotação do euro. É importante compreender esses fatores para entender como eles podem influenciar o preço do euro.',
-//   }, {
-//     title: 'Como o Euro Pode Influenciar suas Viagens e Compras de Produtos Importados?',
-//     imageUrl: '/articles/article05-euro-moeda.jpg',
-//     imageAlt: 'Uma pilha de cedulas do euro.',
-//     text: 'O Euro Moeda é uma ferramenta útil para viagens e compras de produtos importados. Oferece segurança, rapidez e tarifas de câmbio competitivas. Ao converter moedas para o euro, você economiza tempo e pode fazer compras com tarifas mais baixas. A cotação do euro também pode ser influenciada pelas taxas de juros, então é importante acompanhar as taxas para obter as melhores tarifas de câmbio possíveis. O Euro Moeda oferece todas essas vantagens, permitindo que você viaje e compre com facilidade, economizando tempo e dinheiro.',
-//   }, {
-//     title: 'Diferença entre Euro Comercial e Euro Turismo',
-//     imageUrl: '/articles/article03-euro-moeda.jpg',
-//     imageAlt: 'Monumento do simbolo do euro como moeda, com 12 estrelas',
-//     text: 'No mercado cambial, o euro comercial é a moeda usada para transações comerciais, enquanto o euro turismo é usado para transações turísticas e compra de produtos importados. O euro comercial é a taxa oficial do euro, usada em compras internacionais. O euro turismo é usado para serviços turísticos e pode ter uma taxa um pouco mais alta.',
-//   },
-// ]
-
 function useLoadGraphicsData() {
   const [graphicData, setGraphicData] = useState([]);
 
@@ -72,18 +43,13 @@ function useLoadGraphicsData() {
                 return;
               }
 
-              const timestampInMilliseconds = parseInt(object.timestamp) * 1000;
-              const data = new Date(timestampInMilliseconds);
-              const day = data.getDate();
-              const month = data.getMonth() + 1;
-              const year = data.getFullYear();
-
               // Crie o objeto correspondente ao índice atual (1, 2, ...)
               newGraphicData[index] = {
-                date: `${day}/${month}/${year}`,
+                date: new Date(object.timestamp * 1000),
                 sellingPrice: object.ask,
               };
             });
+
 
             // Adicione o objeto newGraphicData ao array temporário
             tempDataArray.push(newGraphicData);
@@ -279,7 +245,7 @@ export default function Home() {
 
               const entryKeys = Object.keys(graphicEntry)
 
-              var dataTeste = entryKeys.map((key, index) => {
+              var filteredData = entryKeys.map((key, index) => {
                 if (!isNaN(parseInt(key))) {
                   return [
                     graphicEntry[key].date,
@@ -288,9 +254,10 @@ export default function Home() {
                 }
               })
 
-              dataTeste = dataTeste.filter(element => element !== undefined);
+              filteredData = filteredData.filter(element => element !== undefined);
+              filteredData.unshift(['Data', 'Valor'])
 
-              console.log('dataTeste', dataTeste);
+              console.log('filteredData', filteredData);
 
               var options = {
                 selectionMode: 'multiple',
@@ -298,24 +265,20 @@ export default function Home() {
                 aggregationTarget: 'category'
               }
 
+
+
               return (
                 <Graphic
                   key={index}
-                  data={data}
+                  data={filteredData}
                   size={{ width: "200px", height: "150px" }}
                   chartType='Line'
+                  title={{input: input, output: output}}
                 />
               )
             })}
 
           </div>
-
-          {/* <Graphic
-            data={data}
-            chartType='Line'
-            size={{ width: "200px", height: "150px" }}
-          /> */}
-
         </div>
 
         <div className={styles.articlesSection}>

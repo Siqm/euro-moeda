@@ -7,7 +7,6 @@ import Imagem from '../../../public/articles/article01-euro-moeda.jpg'
  * @param {*} articles [{title: string, imageUrl: string, imageAlt: string, text: string}]}
  * @returns 
  */
-
 export default function ArticleCard({ articles }) {
 
   return (

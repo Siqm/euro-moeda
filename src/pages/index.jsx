@@ -13,69 +13,17 @@ import articles from '../assets/staticData'
 const inter = Inter({ subsets: ['latin'] })
 
 function useLoadGraphicsData() {
-  const [graphicData, setGraphicData] = useState([]);
+
 
   useEffect(() => {
-    async function loadGraphicsData() {
-      const currencyArray = ["EUR-BRL", "BTC-EUR", "EUR-AOA", "USD-EUR"];
-      var responseObjects = [];
 
-      try {
-        await Promise.all(
-          currencyArray.map(async (code) => {
-            const response = await api(`json/daily/${code}/10`, 'GET');
-            responseObjects.push(response);
-          })
-        );
-
-        // Função interna assíncrona para processar os dados
-        async function processData() {
-          const tempDataArray = []; // Array temporário para armazenar os dados de cada moeda
-
-          responseObjects.forEach((cambiumData) => {
-            const newGraphicData = {};
-
-            cambiumData.forEach((object, index) => {
-              if (index === 0) {
-                // Define inputCambium e outputCambium se for o primeiro elemento.
-                newGraphicData.inputCambium = object.code;
-                newGraphicData.outputCambium = object.codein;
-                return;
-              }
-
-              // Crie o objeto correspondente ao índice atual (1, 2, ...)
-              newGraphicData[index] = {
-                date: new Date(object.timestamp * 1000),
-                sellingPrice: object.ask,
-              };
-            });
-
-
-            // Adicione o objeto newGraphicData ao array temporário
-            tempDataArray.push(newGraphicData);
-          });
-
-          return tempDataArray;
-        }
-
-        // Processar os dados dentro da função interna
-        const tempData = await processData();
-
-        // Mesclar os dados do tempData com o estado graphicData
-        setGraphicData(tempData);
-
-      } catch (error) {
-        console.log('error', error);
-      }
-    }
-    loadGraphicsData();
   }, []);
 
   return graphicData;
 }
 
 function useLoadAvailableConversions() {
-  const [coins, setCoins] = useState([]);
+
 
   useEffect(() => {
     /**
@@ -122,22 +70,14 @@ export default function Home() {
   const [eurAsk, setEurAsk] = useState(0)
 
   // Fetch and memoize graphic data
-  const graphicData = useLoadGraphicsData();
+  const [graphicData, setGraphicData] = useState([]);
   // Fetch and memoize available conversions
-  const coins = useLoadAvailableConversions();
-
-  const data = [
-    ['Ano', 'Vendas'],
-    [2015, 1000],
-    [2016, 1170],
-    [2017, 660],
-    [2018, 1030],
-  ];
+  const [coins, setCoins] = useState([]);
 
   /**
-   * A função tem a responsabilidade de setar o valor do input e calcular o outro input respectivamente
+   * The function is responsible for setting the input value and calculating the other input accordingly
    * 
-   * @param {Object} data - Um objeto contendo as propriedades event e type
+   * @param {Object} data - An object containing the properties event and type
    */
   function setAndConvertInputValues(data) {
     const newValue = data.event.target.value
@@ -148,6 +88,60 @@ export default function Home() {
       setConversorInputTwo(parseFloat(newValue / eurAsk).toFixed(2))
     }
   }
+
+  useEffect(() => {
+    async function loadGraphicsData() {
+      // Lista de graficos
+      const currencyArray = ["EUR-BRL", "BTC-EUR", "EUR-AOA", "USD-EUR"];
+      var responseObjects = [];
+      
+      try {
+        await Promise.all(
+          currencyArray.map(async (code) => {
+            const response = await api(`json/daily/${code}/30`, 'GET');
+            responseObjects.push(response);
+          })
+          );
+          
+          // Variação Percentual = ((Valor Final - Valor Inicial) / Valor Inicial) * 100
+          
+          const tempDataArray = []
+          
+          responseObjects.forEach((cambiumData) => {
+            const newGraphicData = {}
+            newGraphicData.cambium = []
+
+          cambiumData.forEach((data, index) => {
+            if (index === 0) {
+              newGraphicData.inputCambium = data.code;
+              newGraphicData.outputCambium = data.codein;
+              newGraphicData.variation = data.ask
+            }
+
+            if (cambiumData.length - 1 === index) {
+              const initialValue = newGraphicData.variation
+              newGraphicData.variation = ((data.ask - initialValue) / initialValue) * 100
+            }
+
+            newGraphicData.cambium[index] = {
+              date: new Date(data.timestamp * 1000),
+              sellingPrice: data.ask,
+            }
+          })
+
+          tempDataArray.push(newGraphicData);
+        })
+
+
+        // Mesclar os dados do tempData com o estado graphicData
+        setGraphicData(tempDataArray);
+
+      } catch (error) {
+        console.log('error', error);
+      }
+    }
+    loadGraphicsData();
+  }, [])
 
   /**
    * Observa qualquer alteração em selectedCoin e executa
@@ -185,11 +179,6 @@ export default function Home() {
     getEurAsk()
   }, [selectedCoin])
 
-  useEffect(() => {
-    console.log('graphicData', graphicData);
-  }, [graphicData])
-
-
   return (
     <>
       <div className={styles.body}>
@@ -226,15 +215,17 @@ export default function Home() {
 
           </div>
 
-          <h1>Teste</h1>
+          <h1>This is a React App</h1>
 
         </main>
 
         <div className={styles.chartsSection}>
 
-          <h2>Trocas populares</h2>
-          <p>Aqui você encontra um gráfico dos últimos 30 dias das trocas mais populares</p>
-          <p>Clique em um para obter mais detalhes</p>
+          <div className={styles.chartsText}>
+            <h2>Trocas populares</h2>
+            <p>Aqui você encontra um gráfico dos últimos 30 dias das trocas mais populares</p>
+            <p>Clique em um para obter mais detalhes</p>
+          </div>
 
           <div className={styles.chartsRow}>
 
@@ -242,22 +233,6 @@ export default function Home() {
 
               const input = graphicEntry.inputCambium
               const output = graphicEntry.outputCambium
-
-              const entryKeys = Object.keys(graphicEntry)
-
-              var filteredData = entryKeys.map((key, index) => {
-                if (!isNaN(parseInt(key))) {
-                  return [
-                    graphicEntry[key].date,
-                    parseFloat(graphicEntry[key].sellingPrice).toFixed(2)
-                  ]
-                }
-              })
-
-              filteredData = filteredData.filter(element => element !== undefined);
-              filteredData.unshift(['Data', 'Valor'])
-
-              console.log('filteredData', filteredData);
 
               var options = {
                 selectionMode: 'multiple',
@@ -268,16 +243,18 @@ export default function Home() {
 
 
               return (
-                <Graphic
-                  key={index}
-                  data={filteredData}
-                  size={{ width: "200px", height: "150px" }}
-                  chartType='Line'
-                  title={{input: input, output: output}}
-                />
+                <div className={styles.graphic}>
+                  <Graphic
+                    key={index}
+                    data={graphicEntry}
+                    size={{ width: "210px", height: "150px" }}
+                    chartType='Line'
+                    title={{ input: input, output: output }}
+                    index={index}
+                  />
+                </div>
               )
             })}
-
           </div>
         </div>
 

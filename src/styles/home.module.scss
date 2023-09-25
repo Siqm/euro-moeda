@@ -2,12 +2,23 @@
   width: 100%;
 }
 
+.welcome {
+  // background-color: radial-gradient(circle, rgba(150, 141, 141, 0.494), rgba(28, 28, 30, 0.7)) !important;
+  background-image: url('../assets/gradient-blue.jpg');
+  background-size: 100% auto;
+  margin: 0;
+}
+
 .header {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  align-items: center;
   height: 50px;
   padding: 15px;
+  background: radial-gradient(circle, rgba(150, 141, 141, 0.235), rgba(28, 28, 30, 0.7));
+
+  border-bottom: .5px rgba(217, 217, 13, 0.692) solid;
 
   h1 {
     font-size: 20px;
@@ -30,6 +41,7 @@
     display: flex;
     border: .05px transparent solid;
     background-color: var(--button);
+    font-family: Georgia, 'Times New Roman', Times, serif;
   }
 
   @media (min-width: 1080px) {
@@ -41,12 +53,23 @@
 }
 
 .mainContainer {
-  width: 100%;
+  width: 70vw;
   height: 500px;
   padding: 20px;
+  margin: auto;
   display: flex;
   align-items: center;
+  flex-direction: row;
   justify-content: space-evenly;
+  // justify-content: center;
+  // justify-content: center;
+
+  h1 {
+    width: 35vw;
+    text-transform: uppercase;
+    text-align: right;
+    line-height: 40px;
+  }
 }
 
 .conversor {
@@ -91,16 +114,21 @@
 .chartsText {
   width: 65%;
   margin: 0 auto;
+  text-align: center;
+
+  background: radial-gradient(circle, rgba(225, 223, 223, 0.40), rgba(0, 0, 0, 0.26), rgba(0,0,0,0.02));
   
   h2 {
     margin-bottom: 10px;
     color: #fff;
     letter-spacing: 2.5px;
     font-size: 25px;
+    color: var(--titleGreen);
   }
 
   p {
-    color: #fff;
+    color: var(--titleGreen);
+    line-height: 25px;
   }
 }
 

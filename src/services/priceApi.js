@@ -1,6 +1,8 @@
 
 export async function api(endpoint, method) {
 
+    console.log('passando pela api');
+
     const headers = { "Content-Type":"application/json" };
 
     let requestOptions = {

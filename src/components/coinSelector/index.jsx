@@ -19,26 +19,6 @@ export default function CoinSelector({ coinsList, defaultCoin, onChange }) {
     // Corpo da função (lógica do componente) vai aqui.
     // O componente renderiza o seletor de moedas com base nos parâmetros fornecidos.
 
-    
-    
-    
-
-    useEffect(() => {
-        console.log('coinsList', coinsList);
-    }, [coinsList])
-    useEffect(() => {
-        console.log('defaultCoin', defaultCoin);
-    }, [defaultCoin])
-    useEffect(() => {
-        console.log('onChange', onChange);
-    }, [onChange])
-
-    function handleChanges(event) {
-
-        setCoinSelected(event.target.value)
-        onChange(event)
-    }
-
     const selection = !!defaultCoin ? true : false
 
     const [coinSelected, setCoinSelected] = useState('')
@@ -58,7 +38,7 @@ export default function CoinSelector({ coinsList, defaultCoin, onChange }) {
                 name="currency"
                 id="currency"
                 autoFocus
-                onChange={handleChanges}
+                onChange={(e) => onChange(e.target.value)}
                 className={styles.selector}
             >
                 {selection ? 

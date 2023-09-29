@@ -1,29 +1,29 @@
 const articles = [
     {
-        title: 'Descubra A Euromoeda: Uma Ferramenta De Conversão De Moedas Para O Euro',
+        title: 'Discover The Euro Currency: A Currency Conversion Tool for Euro',
         imageUrl: '/articles/article01-euro-moeda.jpg',
-        imageAlt: 'Monumento do simbolo do euro como moeda, com 12 estrelas',
-        text: 'Você já se perguntou o que é o euro e porque ele é importante? Está procurando por uma maneira fácil de comprar ou converter euros para outra moeda? Se você já está familiarizado com a moeda européia ou está procurando começar a entender a partir do zero, então este artigo é para você.- Descubra tudo o que precisa saber sobre o euro incluindo o que é o Euromoeda.com com este artigo informativo. Aprenda sobre a história do euro, quais países usam a moeda européia, e qual é o futuro do euro. Obtenha todas essas informações e mais aqui no Euromoeda.com.',
+        imageAlt: 'Monument of the euro symbol as currency, with 12 stars',
+        text: "Have you ever wondered what the euro is and why it's important? Are you looking for an easy way to buy or convert euros into another currency? Whether you're already familiar with the European currency or starting to understand it from scratch, this article is for you. Discover everything you need to know about the euro, including what Euromoeda.com is, with this informative article. Learn about the history of the euro, which countries use the European currency, and what the future holds for the euro. Get all this information and more here on Euromoeda.com.",
     }, {
-        title: 'Sobre o Euro',
+        title: 'About the Euro',
         imageUrl: '/articles/article02-euro-moeda.jpg',
-        imageAlt: 'Monumento do simbolo do euro como moeda, com 12 estrelas',
-        text: 'O euro é a moeda oficial da Zona Euro, usada por 19 países da União Europeia para facilitar as transações comerciais. É regulado pela Autoridade Monetária Europeia e as notas e moedas são emitidas em diferentes denominações. A cotação do euro é influenciada por fatores como taxas de juros, estabilidade econômica, decisões políticas e exportações/importações.',
+        imageAlt: 'Monument of the euro symbol as currency, with 12 stars',
+        text: 'The euro is the official currency of the Eurozone, used by 19 European Union countries to facilitate commercial transactions. It is regulated by the European Monetary Authority, and banknotes and coins are issued in different denominations. The euro exchange rate is influenced by factors such as interest rates, economic stability, political decisions, and imports/exports.',
     }, {
-        title: 'Como a Cotação do Euro Moeda é Influenciada?',
+        title: 'How is the Euro Currency Exchange Rate Influenced?',
         imageUrl: '/articles/article04-euro-moeda.jpg',
-        imageAlt: 'Um grupo de moedas de euro em uma superfície branca.',
-        text: 'A cotação do euro moeda é influenciada principalmente pela oferta e demanda de moedas estrangeiras em relação ao euro. Fatores econômicos, políticos, bancários e rumores também podem afetar a cotação do euro. É importante compreender esses fatores para entender como eles podem influenciar o preço do euro.',
+        imageAlt: 'A group of euro coins on a white surface.',
+        text: "The euro currency exchange rate is primarily influenced by the supply and demand for foreign currencies relative to the euro. Economic, political, banking, and rumors can also affect the euro exchange rate. Understanding these factors is important to grasp how they can impact the euro's price.",
     }, {
-        title: 'Como o Euro Pode Influenciar suas Viagens e Compras de Produtos Importados?',
+        title: 'How Can the Euro Affect Your Travel and Imported Product Purchases?',
         imageUrl: '/articles/article05-euro-moeda.jpg',
-        imageAlt: 'Uma pilha de cedulas do euro.',
-        text: 'O Euro Moeda é uma ferramenta útil para viagens e compras de produtos importados. Oferece segurança, rapidez e tarifas de câmbio competitivas. Ao converter moedas para o euro, você economiza tempo e pode fazer compras com tarifas mais baixas. A cotação do euro também pode ser influenciada pelas taxas de juros, então é importante acompanhar as taxas para obter as melhores tarifas de câmbio possíveis. O Euro Moeda oferece todas essas vantagens, permitindo que você viaje e compre com facilidade, economizando tempo e dinheiro.',
+        imageAlt: 'A stack of euro banknotes.',
+        text: "The Euro Currency is a useful tool for travel and imported product purchases. It offers security, speed, and competitive exchange rates. By converting currencies to the euro, you save time and can shop with lower rates. The euro exchange rate can also be influenced by interest rates, so it's important to keep track of rates to get the best exchange rates possible. The Euro Currency offers all these advantages, allowing you to travel and shop with ease while saving time and money.",
     }, {
-        title: 'Diferença entre Euro Comercial e Euro Turismo',
+        title: 'Difference Between Commercial Euro and Tourist Euro',
         imageUrl: '/articles/article03-euro-moeda.jpg',
-        imageAlt: 'Monumento do simbolo do euro como moeda, com 12 estrelas',
-        text: 'No mercado cambial, o euro comercial é a moeda usada para transações comerciais, enquanto o euro turismo é usado para transações turísticas e compra de produtos importados. O euro comercial é a taxa oficial do euro, usada em compras internacionais. O euro turismo é usado para serviços turísticos e pode ter uma taxa um pouco mais alta.',
+        imageAlt: 'Monument of the euro symbol as currency, with 12 stars',
+        text: 'In the foreign exchange market, the commercial euro is the currency used for commercial transactions, while the tourist euro is used for tourism services and purchasing imported products. The commercial euro is the official euro rate used in international purchases. The tourist euro is used for tourist services and may have a slightly higher rate.',
     },
 ]
 

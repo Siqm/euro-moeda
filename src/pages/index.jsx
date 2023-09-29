@@ -3,99 +3,81 @@ import styles from '@/styles/home.module.scss'
 import ArticleCard from '@/components/articleCard'
 import { api } from '@/services/priceApi'
 import { useEffect, useState } from 'react'
-import Graphic from '@/components/Graphics/Graphic'
 import articles from '../assets/staticData'
 import Input from '@/components/input'
+import GraphicFix from '@/components/Graphics/Graphic'
 
 const inter = Inter({ subsets: ['latin'] })
 
-// function useLoadGraphicsData() {
-
-
-//   useEffect(() => {
-
-//   }, []);
-
-//   return graphicData;
-// }
-
-// function useLoadAvailableConversions() {
-
-
-//   useEffect(() => {
-//     /**
-//      * A função loadAvailableConvertions() carrega todas as moedas que a API suporta converter para o euro
-//      */
-//     async function loadAvailableConvertions() {
-//       try {
-//         const response = await api('json/available', 'GET')
-
-//         var responseString = JSON.stringify(response)
-//         const responseLength = responseString.length - 1
-//         responseString = responseString.substring(1, responseLength)
-
-//         const regex = /"([A-Z]{3})-EUR":"([^"]+)\/Euro"/g;
-
-//         let result;
-//         const filteredData = [];
-
-//         while ((result = regex.exec(responseString)) !== null) {
-//           const moeda = result[1]; // Captura as 3 letras da moeda
-//           const name = result[2]; // Captura o nome completo da moeda
-
-//           filteredData.push({ moeda, name });
-//         }
-//         setCoins(filteredData)
-
-//       } catch (e) {
-//         console.log("error inside loadAvailableConvertions", e)
-//       }
-//     }
-//     loadAvailableConvertions();
-//   }, []);
-
-//   return coins;
-// }
-
 export default function Home() {
 
-  const [selectedCoin, setSelectedCoin] = useState('BRL')
-
-  const [conversorInputOne, setConversorInputOne] = useState(0);
-  const [conversorInputTwo, setConversorInputTwo] = useState(1);
-
-  const [simpleText, setSimpleText] = useState("text")
-
-  const [eurAsk, setEurAsk] = useState(0)
+  const [currency, setCurrency] = useState("BRL")
+  const [inputCoin, setInputCoin] = useState(0);
+  const [outputCoin, setOutputCoin] = useState(1.00);
+  const [coins, setCoins] = useState([])
+  const [eurAsk, setEurAsk] = useState(5.2)
   const [isFirstRender, setIsFirstRender] = useState(false)
+  const [graphicData, setGraphicData] = useState()
+  const [loading, setLoading] = useState(true)
 
-  // Fetch and memoize graphic data
-  const [graphicData, setGraphicData] = useState([]);
-  // Fetch and memoize available conversions
-  const [coins, setCoins] = useState([]);
-
-  /**
-   * The function is responsible for setting the input value and calculating the other input accordingly
-   * 
-   * @param {Object} data - An object containing the properties event and type
-   */
-  function setAndConvertInputValues(data) {
-    const newValue = data.event.target.value
-
-    if (data.type) {
-      setConversorInputOne(parseFloat(newValue * eurAsk).toFixed(2))
+  function syncCoinValues(newValue, inputType) {
+    console.log('newValue', newValue);
+    console.log('inputType', inputType);
+    if (inputType === "input") {
+      // setInputCoin(newValue)
+      setInputCoin(newValue)
+      setOutputCoin(parseFloat(newValue / eurAsk).toFixed(2))
     } else {
-      setConversorInputTwo(parseFloat(newValue / eurAsk).toFixed(2))
+      setOutputCoin(newValue)
+      setInputCoin(parseFloat(newValue * eurAsk).toFixed(2))
+    }
+  }
+
+  function syncOnCurrencyChange(newValue, inputType) {
+    console.log('on change sync');
+    if (inputType === "input") {
+      setInputCoin(parseFloat(newValue).toFixed(2))
+      setOutputCoin(parseFloat( 1.000 ).toFixed(3).slice(0, -1))
+    } else {
+
+    }
+  }
+
+  async function loadAvailableConvertions() {
+
+    var response
+    try {
+      response = await api('json/available', 'GET')
+
+      var responseString = JSON.stringify(response)
+      const responseLength = responseString.length - 1
+      responseString = responseString.substring(1, responseLength)
+
+      const regex = /"([A-Z]{3})-EUR":"([^"]+)\/Euro"/g;
+
+      let result;
+      const filteredData = [];
+
+      while ((result = regex.exec(responseString)) !== null) {
+        const moeda = result[1]; // Captura as 3 letras da moeda
+        const name = result[2]; // Captura o nome completo da moeda
+
+        filteredData.push({ moeda, name });
+      }
+      setCoins(filteredData)
+    } catch (e) {
+      console.log("error inside loadAvailableConvertions", e)
     }
   }
 
   useEffect(() => {
     if (!isFirstRender) {
+      loadAvailableConvertions()
       async function loadGraphicsData() {
         // Lista de graficos
         const currencyArray = ["EUR-BRL", "BTC-EUR", "EUR-AOA", "USD-EUR"];
         var responseObjects = [];
-  
+
         try {
           await Promise.all(
             currencyArray.map(async (code) => {
@@ -103,40 +85,41 @@ export default function Home() {
               responseObjects.push(response);
             })
           );
-  
+
           // Variação Percentual = ((Valor Final - Valor Inicial) / Valor Inicial) * 100
-  
+
           const tempDataArray = []
-  
+
           responseObjects.forEach((cambiumData) => {
             const newGraphicData = {}
             newGraphicData.cambium = []
-  
+
             cambiumData.forEach((data, index) => {
               if (index === 0) {
                 newGraphicData.inputCambium = data.code;
                 newGraphicData.outputCambium = data.codein;
                 newGraphicData.variation = data.ask
               }
-  
+
               if (cambiumData.length - 1 === index) {
                 const initialValue = newGraphicData.variation
                 newGraphicData.variation = ((data.ask - initialValue) / initialValue) * 100
               }
-  
+
               newGraphicData.cambium[index] = {
                 date: new Date(data.timestamp * 1000),
                 sellingPrice: data.ask,
               }
             })
-  
+
             tempDataArray.push(newGraphicData);
           })
-  
-  
+
+
           // Mesclar os dados do tempData com o estado graphicData
           setGraphicData(tempDataArray);
-  
+          setLoading(false)
+
         } catch (error) {
           console.log('error', error);
         }
@@ -156,31 +139,39 @@ export default function Home() {
      */
     async function getEurAsk() {
 
-      var awesomeApiEndpoint = `EUR-${selectedCoin}`
+      var awesomeApiEndpoint = `EUR-${currency}`
 
       try {
         var response = await api(`last/${awesomeApiEndpoint}`, 'GET')
 
         if (response.status === 404) {
-          awesomeApiEndpoint = `${selectedCoin}-EUR`
+          awesomeApiEndpoint = `${currency}-EUR`
           response = await api(`last/${awesomeApiEndpoint}`, 'GET')
+
+          const dynamicProperty = Object.keys(response)[0];
+          const responseObject = response[dynamicProperty]
+
+          syncOnCurrencyChange(responseObject.ask, "output")
           if (response.status === 404) {
             throw new Error('Moeda não encontrada ' + awesomeApiEndpoint)
           }
+
+        } else {
+
+          const dynamicProperty = Object.keys(response)[0];
+          const responseObject = response[dynamicProperty]
+  
+          setEurAsk(Number(responseObject.ask)) // Sets eurAsk
+          syncOnCurrencyChange(responseObject.ask, "input")
         }
-
-        const dynamicProperty = Object.keys(response)[0];
-        const responseObject = response[dynamicProperty]
-
-        setEurAsk(Number(responseObject.ask)) // Sets eurAsk
-        setConversorInputOne(Number(Number(responseObject.ask).toFixed(2)))
       } catch (error) {
         console.log(error)
       }
     }
 
     getEurAsk()
-  }, [selectedCoin])
+  }, [currency])
+
 
   return (
     <>
@@ -188,6 +179,7 @@ export default function Home() {
 
 
         <div className={styles.welcome}>
+
           <header className={styles.header}>
             <h1>Euro Moeda</h1>
 
@@ -200,22 +192,22 @@ export default function Home() {
 
             <div className={styles.conversor}>
 
+
               <Input
-                coinValue={conversorInputOne}
-                currency={selectedCoin}
+                coinValue={inputCoin}
+                currency={currency}
                 currencyList={coins}
-                setCoinValue={setConversorInputOne}
+                setCoinValue={syncCoinValues}
                 isCurrencyDefault={false}
-                setCurrency={setSelectedCoin}
+                setCurrency={setCurrency}
               />
 
               <Input
-                coinValue={conversorInputOne}
-                currency={selectedCoin}
+                coinValue={outputCoin}
+                currency="EUR"
                 currencyList={coins}
-                setCoinValue={setConversorInputOne}
+                setCoinValue={syncCoinValues}
                 isCurrencyDefault={true}
-                setCurrency={setSelectedCoin}
               />
 
               {/* <CoinInput
@@ -241,42 +233,26 @@ export default function Home() {
           </main>
         </div>
 
+        <div className={styles.adSection}>
+          <div className={styles.ad}>
+            <h1>Ad area</h1>
+          </div>
+        </div>
+
         <div className={styles.chartsSection}>
 
           <div className={styles.chartsText}>
             <h2>Popular Exchanges</h2>
             <p>Here you'll find a chart of the most popular exchanges in the last 30 days</p>
-            <p>Click on one to get more details</p>
+            <p>Hover it get more details</p>
           </div>
 
           <div className={styles.chartsRow}>
 
-            {graphicData.map((graphicEntry, index) => {
+            {
+              !loading ? <GraphicFix graphicData={graphicData} /> : <h1>loading</h1>
+            }
 
-              const input = graphicEntry.inputCambium
-              const output = graphicEntry.outputCambium
-
-              var options = {
-                selectionMode: 'multiple',
-                tooltop: { trigger: 'selection' },
-                aggregationTarget: 'category'
-              }
-
-
-
-              return (
-                <div className={styles.graphic}>
-                  <Graphic
-                    key={index}
-                    data={graphicEntry}
-                    size={{ width: "210px", height: "150px" }}
-                    chartType='Line'
-                    title={{ input: input, output: output }}
-                    index={index}
-                  />
-                </div>
-              )
-            })}
           </div>
         </div>
 

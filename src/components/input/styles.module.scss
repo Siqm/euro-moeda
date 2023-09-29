@@ -30,4 +30,9 @@
         border-bottom: 1px solid gray;
         border-radius: 3px;
     }
+
+    ::-webkit-inner-spin-button {
+        display: none;
+    }
 }
+

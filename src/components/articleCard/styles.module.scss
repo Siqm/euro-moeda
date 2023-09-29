@@ -61,3 +61,25 @@
     box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
     margin-bottom: 25px;
 }
+
+.adSection {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .ad {
+    background-color: #c8c3c3a3;
+    width: 70vw;
+    text-align: center;
+    height: 15vh;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    h1 {
+      color: #675f5f72;
+    }
+  }

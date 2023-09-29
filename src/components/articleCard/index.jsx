@@ -24,12 +24,21 @@ export default function ArticleCard({ articles }) {
                 </h2>
 
                 {article.text.split('-').map((paragraph, i) => (
-                  <p key={i+10}>{paragraph}</p>
+                  <p key={i + 10}>{paragraph}</p>
                 ))}
               </div>
             </div>
             <div className={styles.middleBackground}></div>
             <div className={styles.bottomBackground}></div>
+
+            {index % 2 == 0 &&
+
+              <div className={styles.adSection}>
+                <div className={styles.ad}>
+                  <h1>Ad area</h1>
+                </div>
+              </div>
+            }
           </div>
         )
       })}

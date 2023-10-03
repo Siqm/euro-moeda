@@ -16,7 +16,7 @@ export default function GraphicFix({ graphicData }) {
     return [['Data', 'Valor'], ...convertedData];
   };
 
-  useEffect(() => {
+  useEffect(function cacheGraphicData() {
     if (!cached) {
       if (typeof graphicData === "object") {
         setParsedData(
@@ -44,7 +44,7 @@ export default function GraphicFix({ graphicData }) {
 
   const options = (output, input, index) => {
     return {
-      title: `${output} -> ${input}`,
+      title: `${output} ➡ ${input}`,
       titleTextStyle: {
         fontSize: 12,
         color: '#fff',

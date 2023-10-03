@@ -23,8 +23,8 @@ export default function CoinSelector({ coinsList, defaultCoin, onChange }) {
 
     const [coinSelected, setCoinSelected] = useState('')
 
-    useEffect(() => {
-        selection ? setCoinSelected('Euro') : setCoinSelected('Selecione:') 
+    useEffect(function chooseLabel() {
+        selection ? setCoinSelected('Euro') : setCoinSelected('Select:') 
 
     }, [])
 

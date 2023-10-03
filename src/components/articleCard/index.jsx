@@ -1,6 +1,6 @@
 import React from "react";
 import styles from './styles.module.scss'
-import Imagem from '../../../public/articles/article01-euro-moeda.jpg'
+import Imagem from '../../../public/articles/article01-euromoeda.jpg'
 
 /**
  * Articles é um array de objetos seguindo o modelo:

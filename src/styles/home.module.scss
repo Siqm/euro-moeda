@@ -4,7 +4,7 @@
 
 .welcome {
   // background-color: radial-gradient(circle, rgba(150, 141, 141, 0.494), rgba(28, 28, 30, 0.7)) !important;
-  background-image: url('../assets/gradient-blue.jpg');
+  background-image: url('../assets/gradient-blue-euromoeda.jpg');
   background-size: 100% auto;
   margin: 0;
 }
@@ -116,7 +116,7 @@
   // padding: 50px 0 0 350px;
 
   position: relative;
-  background-image: url('../../public/DetailChart.png');
+  background-image: url('../../public/DetailChart-euromoeda.png');
   background-repeat: no-repeat;
   background-size: cover;
 
@@ -160,4 +160,18 @@
   margin-top: 20px;
   width: 70vw;
   margin: 20px auto 0;
+}
+
+.footer {
+  background-color: #000;
+  height: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footerText {
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: #6d6b50;
 }

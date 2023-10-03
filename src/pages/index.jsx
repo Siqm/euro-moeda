@@ -70,7 +70,7 @@ export default function Home() {
     }
   }
 
-  useEffect(() => {
+  useEffect(function loadAwesomeConvertions(){
     if (!isFirstRender) {
       loadAvailableConvertions()
       async function loadGraphicsData() {
@@ -132,7 +132,7 @@ export default function Home() {
   /**
    * Observa qualquer alteração em selectedCoin e executa
    */
-  useEffect(() => {
+  useEffect(function convertEntry(){
 
     /**
      * Carrega o valor de conversão para a moeda escolhida
@@ -184,7 +184,7 @@ export default function Home() {
             <h1>Euro Moeda</h1>
 
             <div className={styles.blackBox}>
-              <button>Be our partner now</button>
+            <button onClick={(e) => {alert("Work in progress")}}>Other converters</button>
             </div>
           </header>
 
@@ -228,7 +228,7 @@ export default function Home() {
 
             </div>
 
-            <h1>Send money with us</h1>
+            <h1>A simple and easy way to convert euros into other currencies.</h1>
 
           </main>
         </div>
@@ -259,6 +259,10 @@ export default function Home() {
         <div className={styles.articlesSection}>
           <ArticleCard articles={articles} />
         </div>
+
+        <footer className={styles.footer}>
+            <p className={styles.footerText}>Developed by Siq Enterprise</p>
+        </footer>
       </div>
     </>
   )

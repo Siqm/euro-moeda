@@ -9,7 +9,7 @@ export default function Input({ coinValue, setCoinValue, currency, setCurrency, 
     <div className={styles.container}>
 
       <div className={styles.inputContainer}>
-        <p>Insira uma quantia:</p>
+        <p>Enter an amount:</p>
 
         <input
           inputMode='none'

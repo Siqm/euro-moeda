@@ -13,4 +13,4 @@ name: Deploy via ftp
               host: ${{ secrets.HOST }} 
               user: ${{ secrets.USER }}
               password: ${{ secrets.PASS }}
-              localDir: "dist"
+              localDir: "build/server/pages/index.html"

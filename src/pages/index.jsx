@@ -210,25 +210,9 @@ export default function Home() {
                 isCurrencyDefault={true}
               />
 
-              {/* <CoinInput
-              coins={coins}
-              coinValue={conversorInputOne}
-              setCoinValue={setConversorInputOne}
-              onChange={setAndConvertInputValues}
-              readCoinSelection={(eventData) => setSelectedCoin(eventData)}
-            />
-
-            <CoinInput
-              coins={coins}
-              coinValue={conversorInputTwo}
-              setCoinValue={setConversorInputTwo}
-              onChange={setAndConvertInputValues}
-              defaultCoin={{ moeda: 'EUR', name: 'Euro' }}
-            /> */}
-
             </div>
 
-            <h1>A simple and easy way to convert euros into other currencies.</h1>
+            <h1 className={styles.mainTitle}>A simple and easy way to convert euros into other currencies.</h1>
 
           </main>
         </div>

@@ -1,6 +1,25 @@
 .chart {
     display: flex;
-    justify-content: space-around;
-    background-color: red;
+    // justify-content: space-around;
     border: 0 15vw 0 15vw;
+}
+
+.chartContainer {
+    width: 210px;
+    height: 150px;
+}
+
+
+@media screen and (max-width: 400px) {
+
+    .chart {
+        align-items: center;
+        justify-content: center;
+        margin: 5px 0;
+        width: 70vw;
+    }
+
+    .chartContainer {
+        width: 100vw;
+    }
 }

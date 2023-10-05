@@ -80,8 +80,7 @@ export default function GraphicFix({ graphicData }) {
           <div key={index} className={styles.chart}>
 
             <Chart
-              width="210px"
-              height="150px"
+              className={styles.chartContainer}
               chartType='LineChart'
               loader={<div>Loading Chart</div>}
               data={value.data}

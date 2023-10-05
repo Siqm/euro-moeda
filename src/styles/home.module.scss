@@ -175,3 +175,81 @@
   letter-spacing: 5px;
   color: #6d6b50;
 }
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 400px) {
+
+  .body {
+
+    h2 {
+      font-size: 20px;
+      line-height: 1.5;
+    }
+  }
+
+  .welcome {
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: auto;
+  }
+  
+  .mainTitle {
+    display: none;
+  }
+
+  .chartsSection {
+    width: 100vw;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    // align-items: center;
+    justify-content: center;
+  
+    // padding: 50px 0 0 350px;
+  
+    // position: relative;
+    background-image: none;
+  
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      filter: grayscale(100%);
+    }
+  
+  }
+
+  .chartsText {
+    margin: 10px auto;
+    width: 70vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .chartsRow {
+    flex-direction: column;
+    margin-bottom: 25px;
+  }
+
+  .articlesSection {
+    width: 90vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // justify-content: center;
+    margin: auto;
+  }
+}

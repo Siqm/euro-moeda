@@ -28,6 +28,7 @@ export default function ArticleCard({ articles }) {
                 ))}
               </div>
             </div>
+            
             <div className={styles.middleBackground}></div>
             <div className={styles.bottomBackground}></div>
           </div>

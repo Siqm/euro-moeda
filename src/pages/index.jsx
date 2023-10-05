@@ -233,12 +233,6 @@ export default function Home() {
           </main>
         </div>
 
-        <div className={styles.adSection}>
-          <div className={styles.ad}>
-            <h1>Ad area</h1>
-          </div>
-        </div>
-
         <div className={styles.chartsSection}>
 
           <div className={styles.chartsText}>

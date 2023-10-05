@@ -30,15 +30,6 @@ export default function ArticleCard({ articles }) {
             </div>
             <div className={styles.middleBackground}></div>
             <div className={styles.bottomBackground}></div>
-
-            {index % 2 == 0 &&
-
-              <div className={styles.adSection}>
-                <div className={styles.ad}>
-                  <h1>Ad area</h1>
-                </div>
-              </div>
-            }
           </div>
         )
       })}

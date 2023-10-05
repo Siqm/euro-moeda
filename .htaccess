@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteCond %{21} 80
+RewriteRule ^(.*)$ https://www.euromoeda.com/$1 [R,L]

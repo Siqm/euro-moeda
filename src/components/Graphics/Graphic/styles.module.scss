@@ -10,7 +10,7 @@
 }
 
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 640px) {
 
     .chart {
         align-items: center;
@@ -23,3 +23,13 @@
         width: 100vw;
     }
 }
+
+// @media screen and (max-width: 1000px) {
+
+//     .chart {
+//         // align-items: center;
+//         // justify-content: center;
+//         margin: 5px 0;
+//         // width: 70vw;
+//     }
+// }

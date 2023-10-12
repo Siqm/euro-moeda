@@ -134,6 +134,87 @@
 
 }
 
+@media screen and (max-width: 770px) {
+
+    .align {
+        max-width: 90vw;
+    }
+
+    .cardContainer {
+        width: 90vw;
+        height: auto;
+        padding: 20px;
+        margin-top: 15px;
+
+        display: flex;
+        flex-direction: column;
+
+        border-radius: 10px;
+        text-align: center;
+        background-position: -230px -200px;
+
+        img {
+            width: 80vw;
+            height: 40vh;
+            border-radius: 10px;
+            margin: auto;
+            margin-bottom: 20px;
+        }
+    }
+
+    .text {
+
+        p {
+            font-size: 14px;
+            line-height: 1.5;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+    }
+
+    .middleBackground {
+        width: 82vw;
+        height: 10px;
+    }
+    
+    .bottomBackground { 
+        width: 74vw;
+        height: 10px;
+        margin-bottom: 0px;
+    }
+
+}
+
+@media screen and (max-width: 1200px) and (min-width: 770px) { 
+
+    .cardContainer {
+        width: 80vw;
+        height: auto;
+        flex-direction: column;
+        text-align: center;
+        padding: 50px 40px;
+
+        img {
+            margin: auto;
+            width: 70vw;
+            border-radius: 5px;
+            margin-bottom: 22px;
+        }
+    }
+
+    .middleBackground {
+        width: 76vw;
+    }
+
+    .bottomBackground {
+        width: 72vw;
+    }
+    
+}
+
+@media screen and (min-width: 960px) {
+    
+}
+
 // @media screen and (max-width: 1000px) {
 
 //     .align {

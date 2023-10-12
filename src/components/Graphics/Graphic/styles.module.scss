@@ -24,6 +24,20 @@
     }
 }
 
+@media screen and (max-width: 1200px) and (min-width: 770px) { 
+
+    .chart {
+        align-items: center;
+        justify-content: center;
+        margin: 5px 0;
+        width: 70vw;
+    }
+
+    .chartContainer {
+        width: 80vw;
+    }
+}
+
 // @media screen and (max-width: 1000px) {
 
 //     .chart {

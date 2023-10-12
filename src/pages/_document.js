@@ -18,7 +18,6 @@ export default function Document() {
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1635772580987396"
           crossOrigin='anonymous'
           async="true"
-          
         />
       </body>
     </Html>

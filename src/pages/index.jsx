@@ -181,11 +181,10 @@ export default function Home() {
         <div className={styles.welcome}>
 
           <header className={styles.header}>
-            <h1>Euro Moeda</h1>
+            <h2>Euro Moeda</h2>
 
-            <div className={styles.blackBox}>
-            <button onClick={(e) => {alert("Work in progress")}}>Other converters</button>
-            </div>
+            {/* <div className={styles.blackBox}>
+            </div> */}
           </header>
 
           <main className={styles.mainContainer}>

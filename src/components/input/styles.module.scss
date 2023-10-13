@@ -36,3 +36,14 @@
     }
 }
 
+@media screen and (max-width: 640px) { 
+
+    .inputContainer {
+
+        height: auto;
+
+        input {
+            height: 2rem;
+        }
+    }
+}

@@ -19,12 +19,16 @@ export default function Home() {
   const [isFirstRender, setIsFirstRender] = useState(false)
   const [graphicData, setGraphicData] = useState()
   const [loading, setLoading] = useState(true)
+  const [trendCurrencies, setTrendCurrencies] = useState([])
 
+  /**
+   * syncCoinValues()
+   * Converte os valores inseridos de acordo com a Ask atual
+   * @param {number} newValue Novo valor inserido pelo usuario
+   * @param {string} inputType 
+   */
   function syncCoinValues(newValue, inputType) {
-    console.log('newValue', newValue);
-    console.log('inputType', inputType);
     if (inputType === "input") {
-      // setInputCoin(newValue)
       setInputCoin(newValue)
       setOutputCoin(parseFloat(newValue / eurAsk).toFixed(2))
     } else {
@@ -68,6 +72,25 @@ export default function Home() {
     } catch (e) {
       console.log("error inside loadAvailableConvertions", e)
     }
+  }
+
+  function renderTrendCurrencies(currency, index) {
+    const options = {
+      USDEUR: 'US Dollar (USD)',
+      JPYEUR: 'Japanese Yen (JPY)',
+      GBPEUR: 'The Pound Sterling (GBP)',
+    }
+
+    const currencyKeys = Object.keys(currency)
+
+    // console.log('chamou', currency.EURUSD ? currency.EURUSD.ask : undefined);
+
+    return(
+        <tr>
+          <td>{options[currencyKeys[0]]}</td>
+          <td>€ {Number(currency[currencyKeys[0]].ask).toFixed(2)}</td>
+        </tr>
+    )
   }
 
   useEffect(function loadAwesomeConvertions(){
@@ -124,7 +147,17 @@ export default function Home() {
           console.log('error', error);
         }
       }
+
+      async function loadTrendingCurrencies() {
+        const endpoints = ["USD-EUR", "JPY-EUR", "GBP-EUR"]
+        var response = []
+        await endpoints.map( async (v, k) => {
+          response[k] = await api(`last/${v}`, 'GET')
+        })
+        setTrendCurrencies(response)
+      }
       loadGraphicsData();
+      loadTrendingCurrencies();
       setIsFirstRender(true)
     }
   }, [])
@@ -172,13 +205,12 @@ export default function Home() {
     getEurAsk()
   }, [currency])
 
-
   return (
     <>
       <div className={styles.body}>
 
 
-        <div className={styles.welcome}>
+        <section className={styles.welcome}>
 
           <header className={styles.header}>
             <h2>Euro Moeda</h2>
@@ -214,9 +246,9 @@ export default function Home() {
             <h1 className={styles.mainTitle}>A simple and easy way to convert euros into other currencies.</h1>
 
           </main>
-        </div>
+        </section>
 
-        <div className={styles.chartsSection}>
+        <section className={styles.chartsSection}>
 
           <div className={styles.chartsText}>
             <h2>Popular Exchanges</h2>
@@ -231,11 +263,29 @@ export default function Home() {
             }
 
           </div>
-        </div>
+        </section>
 
-        <div className={styles.articlesSection}>
+        <section className={styles.tradedCurrencies}>
+          <h2>Most traded currencies price in Euro</h2>
+            <table>
+              <thead>
+                <tr>
+                  <td>Currency</td>
+                  <td>Price (EUR)</td>
+                </tr>
+              </thead>
+              <tbody>
+                { trendCurrencies && trendCurrencies.map((v) => {
+                  console.log('v', v);
+                  return renderTrendCurrencies(v)
+                })}
+              </tbody>
+            </table>
+        </section>
+
+        <section className={styles.articlesSection}>
           <ArticleCard articles={articles} />
-        </div>
+        </section>
 
         <footer className={styles.footer}>
             <p className={styles.footerText}>Developed by Siq Enterprise</p>
